@@ -11,7 +11,7 @@ final class JobsImporter
     public function __construct(string $host, string $username, string $password, string $databaseName, string $file)
     {
         $this->file = $file;
-        
+
         /* connect to DB */
         try {
             $this->db = new PDO('mysql:host=' . $host . ';dbname=' . $databaseName, $username, $password);
@@ -31,13 +31,14 @@ final class JobsImporter
         /* import each item */
         $count = 0;
         foreach ($xml->item as $item) {
-            $this->db->exec('INSERT INTO job (reference, title, description, url, company_name, publication) VALUES ('
-                . '\'' . addslashes((string) $item->ref) . '\', '
-                . '\'' . addslashes((string) $item->title) . '\', '
-                . '\'' . addslashes((string) $item->description) . '\', '
-                . '\'' . addslashes((string) $item->url) . '\', '
-                . '\'' . addslashes((string) $item->company) . '\', '
-                . '\'' . addslashes((string) $item->pubDate) . '\')'
+            $this->db->exec(
+                'INSERT INTO job (reference, title, description, url, company_name, publication) VALUES ('
+                    . '\'' . addslashes((string) $item->ref) . '\', '
+                    . '\'' . addslashes((string) $item->title) . '\', '
+                    . '\'' . addslashes((string) $item->description) . '\', '
+                    . '\'' . addslashes((string) $item->url) . '\', '
+                    . '\'' . addslashes((string) $item->company) . '\', '
+                    . '\'' . addslashes((string) $item->pubDate) . '\')'
             );
             $count++;
         }

@@ -17,7 +17,7 @@ class JobRepository
     public function saveJobs(array $dataList): int
     {
         $this->db->exec('DELETE FROM job');
-        /* import each item */
+
         $count = 0;
 
         $sql = 'INSERT INTO job (reference, title, description, url, company_name, publication) VALUES (:reference, :title, :description, :url, :company_name, :publication)';
@@ -35,9 +35,11 @@ class JobRepository
             ]);
             $count++;
         }
-
-        var_dump($count);
-        die();
         return $count;
+    }
+
+    public function findAll(): array
+    {
+        return $this->db->query('SELECT id, reference, title, description, url, company_name, publication FROM job')->fetchAll(\PDO::FETCH_ASSOC);
     }
 }

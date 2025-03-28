@@ -7,8 +7,10 @@ To be run from the command line.
 
 use Controller\JobController;
 use Convertor\FileConvertorBuilder;
+use Hydrator\JobHydrator;
 use Repository\JobRepository;
 use Service\JobImporter;
+use Service\JobLister;
 use Utils\DbConnect;
 
 include_once(__DIR__ . '/utils.php');
@@ -19,31 +21,29 @@ printMessage("Starting...");
 
 $jobImporter = new JobImporter();
 $dbConnect = new DbConnect(SQL_HOST, SQL_USER, SQL_PWD, SQL_DB);
-$fileConvertor = new FileConvertorBuilder;
+$fileConvertor = new FileConvertorBuilder();
+$jobLister = new JobLister();
+$jobHydrator = new JobHydrator;
 $jobRepository = new JobRepository($dbConnect->getConnection());
 
 
 $jobController = new JobController(
 	$jobRepository,
 	$jobImporter,
-	$dbConnect,
+	$jobLister,
+	$jobHydrator,
 	$fileConvertor,
 	RESSOURCES_DIR,
 );
 
-$jobController->ImportJobs();
-die();
-
-/* import jobs from regionsjob.xml */
-$jobsImporter = new JobsImporter(SQL_HOST, SQL_USER, SQL_PWD, SQL_DB, RESSOURCES_DIR . 'regionsjob.xml');
-$count = $jobsImporter->importJobs();
+/* import jobs */
+$count = $jobController->importJobs();
 
 printMessage("> {count} jobs imported.", ['{count}' => $count]);
 
-
 /* list jobs */
-$jobsLister = new JobsLister(SQL_HOST, SQL_USER, SQL_PWD, SQL_DB);
-$jobs = $jobsLister->listJobs();
+$jobs = $jobController->listJobs();
+
 
 printMessage("> all jobs ({count}):", ['{count}' => count($jobs)]);
 foreach ($jobs as $job) {
@@ -54,6 +54,5 @@ foreach ($jobs as $job) {
 		'{publication}' => $job['publication']
 	]);
 }
-
 
 printMessage("Terminating...");

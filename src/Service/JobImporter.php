@@ -11,7 +11,7 @@ class JobImporter
     public function import(
         JobRepository $jobRepository,
         array $filesToConvert
-    ) {
+    ): int {
 
         $jobs = [];
         foreach ($filesToConvert as $file) {
@@ -20,7 +20,6 @@ class JobImporter
 
         $data = array_merge(...array_values($jobs));
 
-        $jobRepository->saveJobs($data);
-        die();
+        return $jobRepository->saveJobs($data);
     }
 }

@@ -14,6 +14,7 @@ class Job
     private string $url;
     private string $company;
     private \DateTimeImmutable $pubDate;
+    private ?int $id;
 
     public function __construct(
         string $ref,
@@ -29,14 +30,23 @@ class Job
         $this->url = $url;
         $this->company = $company;
         $this->pubDate = $pubDate;
+        $this->id = 0;
     }
 
-    public function getRef() {}
+    public function getRef()
+    {
+        return $this->ref;
+    }
     public function getTitle() {}
     public function getDescription() {}
     public function getUrl() {}
     public function getCompany() {}
     public function getPubDate() {}
+    public function getId()
+    {
+        return $this->id;
+    }
+
 
     public function setRef() {}
     public function setTitle() {}
@@ -44,20 +54,24 @@ class Job
     public function setUrl() {}
     public function setCompany() {}
     public function setPubDate() {}
-
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
     public function toArray()
     {
         $dateToString = $this->pubDate->format(("Y-m-d"));
 
-        return [
+        $jobToArray = [
             'reference' => $this->ref,
             'title' => $this->title,
             'description' => $this->description,
             'url' => $this->url,
             'company_name' => $this->company,
-            'publication' => $dateToString,
-
+            'publication' => $dateToString
         ];
+        isset($this->id) ? $jobToArray['id'] = $this->id : null;
+        return $jobToArray;
     }
 }
