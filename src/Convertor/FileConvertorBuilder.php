@@ -10,7 +10,7 @@ class FileConvertorBuilder
     const XML_FORMAT = 'xml';
     const JSON_FORMAT = 'json';
 
-    public function buildFile(string $resourcesDirectory)
+    public function buildFile(string $resourcesDirectory): array
     {
 
         $files = $this->GetFilesFromDirectory($resourcesDirectory);
@@ -21,6 +21,8 @@ class FileConvertorBuilder
                 $filesToConvert[] = new JsonFileConvertor($resourcesDirectory . $fileName);
             } elseif (pathinfo($fileName, PATHINFO_EXTENSION) === self::XML_FORMAT) {
                 $filesToConvert[] = new XmlFileConvertor($resourcesDirectory . $fileName);
+            } else {
+                throw new \Exception('This file exension is not correct: ' . $fileName);
             }
         }
 

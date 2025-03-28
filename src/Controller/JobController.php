@@ -34,6 +34,7 @@ class JobController
         $this->fileConvertor = $fileConvertor;
     }
 
+
     public function importJobs(): int
     {
         try {
@@ -48,7 +49,9 @@ class JobController
         }
     }
 
-    public function listJobs()
+
+
+    public function listJobs(): array
     {
         try {
             return $this->jobLister->listJobs($this->jobRepository, $this->jobHydrator);

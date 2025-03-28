@@ -17,7 +17,7 @@ class DbConnect
     ) {}
 
 
-    public function getConnection()
+    public function getConnection(): \PDO
     {
         try {
             $this->db = new \PDO('mysql:host=' . $this->host . ';dbname=' . $this->databaseName, $this->username, $this->password);

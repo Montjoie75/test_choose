@@ -9,7 +9,6 @@ use Repository\JobRepository;
 
 class JobLister
 {
-
     public function listJobs(
         JobRepository $jobRepository,
         JobHydrator $jobHydrator
